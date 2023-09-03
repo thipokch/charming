@@ -1,8 +1,14 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{AxisPointer, Color, Formatter, Padding};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TriggerOn {
     Mousemove,
@@ -13,7 +19,12 @@ pub enum TriggerOn {
 }
 
 /// Types of triggering.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Trigger {
     Item,
@@ -21,34 +32,30 @@ pub enum Trigger {
     None,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Tooltip {
-    #[serde(skip_serializing_if = "Option::is_none")]
     trigger: Option<Trigger>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     trigger_on: Option<TriggerOn>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_pointer: Option<AxisPointer>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<Formatter>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<Padding>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 }
 

@@ -1,53 +1,47 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
     element::{AreaStyle, ColorBy, Emphasis, LineStyle, Symbol, Tooltip},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Radar {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     area_style: Option<AreaStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radar_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_keep_aspect: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_rotate: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     tooltip: Option<Tooltip>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 }
 

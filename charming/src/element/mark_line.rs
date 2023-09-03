@@ -1,10 +1,16 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Serialize, Deserialize};
+use serde_with::{skip_serializing_none, serde_as};
 
 use crate::datatype::CompositeValue;
 
 use super::{label::Label, line_style::LineStyle, symbol::Symbol};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MarkLineDataType {
     Min,
@@ -25,35 +31,31 @@ impl From<&str> for MarkLineDataType {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MarkLineData {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<MarkLineDataType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coord: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 }
 
@@ -124,6 +126,12 @@ impl From<(&str, &str)> for MarkLineData {
     }
 }
 
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq,  Deserialize)]
 pub enum MarkLineVariant {
     Simple(MarkLineData),
     StartToEnd(MarkLineData, MarkLineData),
@@ -143,25 +151,26 @@ impl Serialize for MarkLineVariant {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MarkLine {
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     symbol: Vec<Symbol>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<MarkLineVariant>,
 }
 

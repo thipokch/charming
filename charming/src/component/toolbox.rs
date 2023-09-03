@@ -1,8 +1,14 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{datatype::CompositeValue, element::Orient};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SaveAsImageType {
     Png,
@@ -10,20 +16,21 @@ pub enum SaveAsImageType {
     Svg,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SaveAsImage {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     #[serde(rename = "type")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     type_: Option<SaveAsImageType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<String>,
 }
 
@@ -58,13 +65,16 @@ impl SaveAsImage {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Restore {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 }
 
@@ -87,16 +97,18 @@ impl Restore {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataView {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     read_only: Option<bool>,
 }
 
@@ -125,7 +137,12 @@ impl DataView {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MagicTypeType {
     /// For line charts.
@@ -147,13 +164,16 @@ impl From<&str> for MagicTypeType {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MagicType {
-    #[serde(skip_serializing_if = "Option::is_none")]
     type_: Option<Vec<MagicTypeType>>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<String>,
 }
 
@@ -176,7 +196,12 @@ impl MagicType {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum BrushType {
     Rect,
@@ -187,10 +212,15 @@ pub enum BrushType {
     Clear,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Brush {
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     type_: Vec<BrushType>,
 }
 
@@ -205,10 +235,14 @@ impl Brush {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ToolboxDataZoom {
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<CompositeValue>,
 }
 
@@ -223,25 +257,24 @@ impl ToolboxDataZoom {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Feature {
-    #[serde(skip_serializing_if = "Option::is_none")]
     save_as_image: Option<SaveAsImage>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     restore: Option<Restore>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     data_view: Option<DataView>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     magic_type: Option<MagicType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     data_zoom: Option<ToolboxDataZoom>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     brush: Option<Brush>,
 }
 
@@ -288,28 +321,26 @@ impl Feature {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Toolbox {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     feature: Option<Feature>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<Orient>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 }
 

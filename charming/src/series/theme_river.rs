@@ -1,10 +1,17 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{BoundaryGap, ColorBy, CoordinateSystem, Label},
 };
 
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct ThemeRiverData {
     date: CompositeValue,
     value: CompositeValue,
@@ -47,49 +54,42 @@ where
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ThemeRiver {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     boundary_gap: Option<BoundaryGap>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<ThemeRiverData>,
 }
 

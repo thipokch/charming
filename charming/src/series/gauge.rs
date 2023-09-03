@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
@@ -8,34 +9,30 @@ use crate::{
     },
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeDetail {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_style: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_weight: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_family: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     precision: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     value_animation: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<Formatter>,
 }
 
@@ -100,13 +97,16 @@ impl GaugeDetail {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeTitle {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     offset_center: Option<(String, String)>,
 }
 
@@ -129,25 +129,24 @@ impl GaugeTitle {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeProgress {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     overlap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     round_cap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     clip: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 }
 
@@ -194,82 +193,64 @@ impl GaugeProgress {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Gauge {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     legend_hover_link: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     start_angle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     end_angle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     clockwise: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     progress: Option<GaugeProgress>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_tick: Option<AxisTick>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_line: Option<SplitLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pointer: Option<Pointer>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     anchor: Option<Anchor>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     detail: Option<GaugeDetail>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     title: Option<GaugeTitle>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 

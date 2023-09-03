@@ -1,17 +1,22 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::RawString;
 
 use super::{DataSource, Dimension};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Source {
     source: DataSource,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     dimensions: Vec<Dimension>,
 }
 
@@ -62,22 +67,22 @@ where
     }
 }
 
-#[derive(Debug, Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq,Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Transform {
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     transform: Option<RawString>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     from_dataset_id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     from_dataset_index: Option<i32>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     from_transform_result: Option<i32>,
 }
 
@@ -124,6 +129,12 @@ impl From<&str> for Transform {
     }
 }
 
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct Dataset {
     sources: Vec<Source>,
     transforms: Vec<Transform>,

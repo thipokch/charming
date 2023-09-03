@@ -1,8 +1,14 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::{color::Color, line_style::LineStyle, Formatter};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum LabelPosition {
     Top,
@@ -24,7 +30,12 @@ pub enum LabelPosition {
     Center,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum LabelAlign {
     Left,
@@ -32,7 +43,12 @@ pub enum LabelAlign {
     Right,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum LabelVerticalAlign {
     Top,
@@ -40,64 +56,50 @@ pub enum LabelVerticalAlign {
     Bottom,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Label {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<LabelPosition>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     distance: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     rotate: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     offset: Option<(f64, f64)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<Formatter>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_weight: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<(f64, f64, f64, f64)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     align: Option<LabelAlign>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     vertical_align: Option<LabelVerticalAlign>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     silent: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_blur: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_x: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
 }
 
@@ -227,25 +229,24 @@ impl Label {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LabelLine {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     show_above: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     length: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     smooth: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_turn_angle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 }
 
@@ -292,16 +293,18 @@ impl LabelLine {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LabelLayout {
-    #[serde(skip_serializing_if = "Option::is_none")]
     hide_overlap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     overlap: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     rotate: Option<f64>,
 }
 

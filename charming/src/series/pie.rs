@@ -1,81 +1,73 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{CompositeValue, DataFrame, DataPoint},
     element::{ColorBy, CoordinateSystem, Emphasis, ItemStyle, Label, LabelLine},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PieRoseType {
     Radius,
     Area,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Pie {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     legend_hover_link: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordiate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     geo_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     calendar_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_mode: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_offset: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     clockwise: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     avoid_label_overlap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     start_angle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     rose_type: Option<PieRoseType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label_line: Option<LabelLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 

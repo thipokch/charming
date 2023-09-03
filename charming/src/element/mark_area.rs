@@ -1,17 +1,20 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::{blur::Blur, emphasis::Emphasis, item_style::ItemStyle, label::Label};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MarkAreaData {
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis: Option<String>,
 }
 
@@ -40,25 +43,25 @@ impl MarkAreaData {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct MarkArea {
-    #[serde(skip_serializing_if = "Option::is_none")]
     silent: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     blur: Option<Blur>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<(MarkAreaData, MarkAreaData)>,
 }
 

@@ -1,18 +1,29 @@
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Blur, Emphasis, ItemStyle, Label, Select, Symbol},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeLayout {
     Orthogonal,
     Radial,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TreeOrient {
     #[serde(rename = "LR")]
     LeftRight,
@@ -24,17 +35,26 @@ pub enum TreeOrient {
     BottomTop,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeEdgeShape {
     Curve,
     Polyline,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TreeLeaves {
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 }
 
@@ -49,132 +69,106 @@ impl TreeLeaves {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TreeNode {
     pub name: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub collapsed: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<TreeNode>>,
 }
 
 /// The tree diagram is mainly used to display the tree data structure.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Tree {
     #[serde(rename = "type")]
     type_: String,
 
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Component name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
     /// zlevel value of all graphical elements in the tree.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z_level: Option<u64>,
 
     /// z value of all graphical elements in the tree.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zoom: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout: Option<TreeLayout>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<TreeOrient>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_rotate: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_keep_aspect: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_offset: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     edge_shape: Option<TreeEdgeShape>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     edge_fork_position: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     roam: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     initial_tree_depth: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     blur: Option<Blur>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     select: Option<Select>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_mode: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     expand_and_collapse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     animation_duration: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     animation_duration_update: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     leaves: Option<TreeLeaves>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<TreeNode>,
 }
 

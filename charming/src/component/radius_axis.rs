@@ -1,72 +1,58 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{AxisLabel, AxisLine, AxisType, BoundaryGap, NameLocation, TextStyle};
 
 /// Radius axis in polar coordinate.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RadiusAxis {
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     polar_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     type_: Option<AxisType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_location: Option<NameLocation>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_text_style: Option<TextStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_gap: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_rotation: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inverse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     boundary_gap: Option<BoundaryGap>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     log_base: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<String>,
 }
 

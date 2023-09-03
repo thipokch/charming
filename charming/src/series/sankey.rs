@@ -1,11 +1,17 @@
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Emphasis, Label, LineStyle, Orient},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SankeyNodeAlign {
     Left,
@@ -13,15 +19,18 @@ pub enum SankeyNodeAlign {
     Justify,
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SankeyNode {
     pub name: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub depth: Option<f64>,
 }
 
@@ -38,7 +47,12 @@ where
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SankeyLink {
     pub source: String,
@@ -60,61 +74,51 @@ where
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Sankey {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z_level: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<Orient>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     node_align: Option<SankeyNodeAlign>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     links: Vec<SankeyLink>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<SankeyNode>,
 }
 

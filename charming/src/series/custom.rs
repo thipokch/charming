@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{CompositeValue, DataFrame, DataPoint, Dimension},
@@ -7,63 +8,52 @@ use crate::{
     },
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Custom {
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     legend_hover_link: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     polar_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     geo_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     calendar_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     render_item: Option<RawString>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label_line: Option<LabelLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label_layout: Option<LabelLayout>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_mode: Option<bool>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     dimensions: Vec<Dimension>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     encode: Option<DimensionEncode>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 

@@ -1,11 +1,17 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Label, LineStyle},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AxisPointerType {
     Line,
@@ -14,7 +20,12 @@ pub enum AxisPointerType {
     None,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AxisPointerAxis {
     X,
@@ -23,19 +34,20 @@ pub enum AxisPointerAxis {
     Angle,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisPointerLink {
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_name: Option<String>,
 }
 
@@ -72,44 +84,40 @@ impl AxisPointerLink {
 
 /// Axis Pointer is a tool for displaying reference line and axis value under
 /// mouse pointer.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisPointer {
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the axis pointer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// Indicator type.
     #[serde(rename = "type")]
-    #[serde(skip_serializing_if = "Option::is_none")]
     type_: Option<AxisPointerType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     snap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     animation: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis: Option<AxisPointerAxis>,
 
     /// Label of axis pointer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
     /// Line style of axis pointer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
     /// Axis pointer can be linked to each other.
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     link: Vec<AxisPointerLink>,
 }
 

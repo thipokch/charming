@@ -1,88 +1,69 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Blur, Emphasis, ItemStyle, Label, Select},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Geo {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     map: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     roam: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     aspect_scale: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bounding_coords: Option<((String, String), (String, String))>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zoom: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale_limit: Option<(f64, f64)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_map: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_property: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_mode: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     select: Option<Select>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     blur: Option<Blur>,
 
     /// The `zlevel` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout_center: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout_size: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     silent: Option<bool>,
 }
 

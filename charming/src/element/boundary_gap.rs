@@ -1,4 +1,5 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Deserialize, Serialize};
+use serde_with::{skip_serializing_none, serde_as};
 
 /// The boundary gap on both sides of a coordinate axis. The setting and
 /// behavior of category axes and non-category axes are different.
@@ -9,6 +10,13 @@ use serde::{ser::SerializeSeq, Serialize};
 /// For non-category axis, including time, numerical value, and log axes,
 /// `BoundaryGap` is an array of two values, representing the spanning range
 /// between minimum and maximum value.
+///
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum BoundaryGap {
     CategoryAxis(bool),
     NonCategoryAxis(String, String),

@@ -1,20 +1,22 @@
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{Emphasis, ItemStyle, Label, Sort};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SunburstLevel {
-    #[serde(skip_serializing_if = "Option::is_none")]
     r0: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     r: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 }
 
@@ -49,19 +51,22 @@ impl SunburstLevel {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SunburstNode {
     name: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     value: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(skip_deserializing)]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     children: Vec<SunburstNode>,
 }
 
@@ -111,40 +116,37 @@ impl From<(&str, f64, &str)> for SunburstNode {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Sunburst {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z_level: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     sort: Option<Sort>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     levels: Vec<SunburstLevel>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<SunburstNode>,
 }
 

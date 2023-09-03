@@ -1,11 +1,17 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Color, Icon, ItemStyle, LabelAlign, LineStyle, Orient, Padding, TextStyle},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum LegendType {
     /// Simple legend.
@@ -15,7 +21,12 @@ pub enum LegendType {
     Scroll,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum LegendSelectedMode {
     /// Multiple selection.
@@ -25,12 +36,16 @@ pub enum LegendSelectedMode {
     Single,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LegendItem {
     pub name: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<Icon>,
 }
 
@@ -67,107 +82,87 @@ impl From<(String, String)> for LegendItem {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Legend {
     /// Type of legend.
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<LegendType>,
 
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the legend component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// The `zlevel` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
     /// Distance between title component and the left side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
     /// Distance between title component and the top side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
     /// Distance between title component and the right side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
     /// Distance between title component and the bottom side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
     /// Width of legend component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
     /// Height of legend component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
     /// The layout orientation of legend.
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<Orient>,
 
     /// The align of legend.
-    #[serde(skip_serializing_if = "Option::is_none")]
     align: Option<LabelAlign>,
 
     /// Legend padding.
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<Padding>,
 
     /// The gap between each legend.
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_gap: Option<f64>,
 
     /// Width of legend symbol.
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_width: Option<f64>,
 
     /// Height of legend symbol.
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_height: Option<f64>,
 
     /// Legend item style.
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
     /// Legend line style.
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_style: Option<TextStyle>,
 
     /// Rotation of the symbol.
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_rotate: Option<String>,
 
     /// Formatter is used to format label of legend.
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_mode: Option<LegendSelectedMode>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inactive_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<LegendItem>,
 }
 

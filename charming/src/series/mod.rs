@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 pub mod bar;
 pub mod bar3d;
@@ -48,6 +49,12 @@ pub use theme_river::*;
 pub use tree::*;
 pub use treemap::*;
 
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum Series {
     Bar(bar::Bar),
     Bar3d(bar3d::Bar3d),

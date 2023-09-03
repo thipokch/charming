@@ -1,42 +1,38 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{AxisType, NameLocation};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ParallelAxis {
-    #[serde(skip_serializing_if = "Option::is_none")]
     dim: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     parallel_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     realtime: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<AxisType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_location: Option<NameLocation>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_gap: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inverse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<String>,
 }
 

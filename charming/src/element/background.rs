@@ -1,26 +1,26 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::{area_style::AreaStyle, border_type::BorderType, color::Color, line_style::LineStyle};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BackgroundStyle {
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_type: Option<BorderType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_radius: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     opacity: Option<f64>,
 }
 
@@ -67,13 +67,16 @@ impl BackgroundStyle {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataBackground {
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     area_style: Option<AreaStyle>,
 }
 

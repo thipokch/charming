@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
@@ -8,55 +9,46 @@ use crate::{
     },
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Scatter {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     dataset_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<SymbolSize>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     encode: Option<DimensionEncode>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     mark_line: Option<MarkLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     mark_area: Option<MarkArea>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 

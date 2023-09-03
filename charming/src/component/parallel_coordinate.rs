@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
@@ -8,77 +9,60 @@ use crate::{
     },
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ParallelAxisDefault {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<AxisType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_location: Option<NameLocation>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_text_style: Option<TextStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_gap: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_rotate: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inverse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     boundary_gap: Option<BoundaryGap>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     log_base: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     silent: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     trigger_event: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_tick: Option<AxisTick>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_line: Option<SplitLine>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<String>,
 }
 
@@ -227,40 +211,34 @@ impl ParallelAxisDefault {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ParallelCoordinate {
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout: Option<ParallelLayout>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     parallel_axis_default: Option<ParallelAxisDefault>,
 }
 

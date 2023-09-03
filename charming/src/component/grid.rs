@@ -1,56 +1,51 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Color, Padding, TextStyle, Trigger},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GridTooltip {
     /// Whether to show the tooltip component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// Type of triggering.
-    #[serde(skip_serializing_if = "Option::is_none")]
     trigger: Option<Trigger>,
 
     /// The position of the tooltip's floating layer, which would follow the
     /// position of mouse by default.
-    #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<(String, String)>,
 
     /// The content formatter of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<String>,
 
     /// The value formatter of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     value_formatter: Option<String>,
 
     /// The background color of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
     /// The border color of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
     /// The border width of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
     /// The floating layer of tooltip space around content.
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<Padding>,
 
     /// Text style of tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_style: Option<TextStyle>,
 
     /// Extra CSS style for the tooltip's floating layer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     extra_css_text: Option<String>,
 }
 
@@ -127,83 +122,69 @@ impl GridTooltip {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Grid {
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the grid in rectangular coordinate.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// The `zlevel` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
     /// Distance between grid component and the left side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
     /// Distance between grid component and the top side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
     /// Distance between grid component and the right side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
     /// Distance between grid component and the bottom side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
     /// Width of grid component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
     /// Height of grid component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
     /// Whether the grid region contains axis tick label of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     contain_label: Option<bool>,
 
     /// Background color of grid, which is transparent by default.
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
     /// Border color of grid.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
     /// Border width of grid.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
     /// Size of shadow blue.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_blur: Option<f64>,
 
     /// Shadow color.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_color: Option<Color>,
 
     /// Offset distance on the horizontal direction of shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_x: Option<f64>,
 
     /// Offset distance on the vertical direction of shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
 
     /// Tooltip settings in the grid.
-    #[serde(skip_serializing_if = "Option::is_none")]
     tooltip: Option<GridTooltip>,
 }
 

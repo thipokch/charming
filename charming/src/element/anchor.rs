@@ -1,29 +1,28 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::{icon::Icon, item_style::ItemStyle};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Anchor {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     show_above: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     icon: Option<Icon>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     offset_center: Option<(String, String)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     keep_aspect: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_style: Option<ItemStyle>,
 }
 

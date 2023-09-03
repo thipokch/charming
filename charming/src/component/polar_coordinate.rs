@@ -1,26 +1,27 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::datatype::CompositeValue;
 
 /// Polar coordinate can be used in scatter and line chart.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PolarCoordinate {
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// The `zlevel` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius: Option<CompositeValue>,
 }
 

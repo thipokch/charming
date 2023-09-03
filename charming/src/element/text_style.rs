@@ -1,29 +1,28 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::color::Color;
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TextStyle {
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_style: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_weight: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_family: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_height: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     align: Option<String>,
 }
 

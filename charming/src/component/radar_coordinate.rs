@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
@@ -8,99 +9,74 @@ use crate::{
 };
 
 /// Name options for radar indicators.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RadarAxisName {
     /// Whether to display the indicator's name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// Formatter of the indicator's name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<Formatter>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_style: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_weight: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_family: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_height: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_type: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_dash_offset: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_radius: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<Padding>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_blur: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_x: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     height: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_border_width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_border_type: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_border_dash_offset: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_shadow_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_shadow_blur: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_shadow_offset_x: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_shadow_offset_y: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     overflow: Option<String>,
 }
 
@@ -291,19 +267,20 @@ impl RadarAxisName {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RadarIndicator {
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 }
 
@@ -360,60 +337,49 @@ impl From<(&str, i64, i64)> for RadarIndicator {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct RadarCoordinate {
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// The `zlevel` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     center: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     start_angle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_name: Option<RadarAxisName>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_gap: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shape: Option<Shape>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_tick: Option<AxisTick>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_line: Option<SplitLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_area: Option<SplitArea>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     indicator: Vec<RadarIndicator>,
 }
 

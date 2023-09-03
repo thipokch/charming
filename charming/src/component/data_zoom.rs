@@ -1,11 +1,17 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Color, DataBackground, Orient, TextStyle},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum FilterMode {
     Filter,
@@ -14,7 +20,12 @@ pub enum FilterMode {
     None,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum DataZoomType {
     Inside,
@@ -25,115 +36,87 @@ pub enum DataZoomType {
 /// DataZoom component is used for zooming a specific area, which enables user
 /// to investigate data in detail, or get an overview of the data, or get rid
 /// of outlier points.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DataZoom {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<DataZoomType>,
 
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// Whether to enable real-time view update.
-    #[serde(skip_serializing_if = "Option::is_none")]
     realtime: Option<bool>,
 
     /// Background color of the component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
     /// Style of the data shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     data_background: Option<DataBackground>,
 
     /// Style of the selected data shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     selected_data_background: Option<DataBackground>,
 
     /// Color to fill selected area.
-    #[serde(skip_serializing_if = "Option::is_none")]
     filler_color: Option<Color>,
 
     /// Color of border.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     start: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     end: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     start_value: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     end_value: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_span: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_span: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_value_span: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_value_span: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<Orient>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zoom_lock: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     throttle: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     disabled: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     radius_axis_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     angle_axis_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     filter_mode: Option<FilterMode>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_style: Option<TextStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     handle_icon: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     brush_select: Option<bool>,
 }
 

@@ -101,7 +101,9 @@ use component::{
 };
 use datatype::Dataset;
 use element::{process_raw_strings, AxisPointer, Color, MarkLine, Tooltip};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
+
 use series::Series;
 
 /**
@@ -238,92 +240,70 @@ mouse pointer.
 [`Toolbox`] is a feature toolbox that includes data view, save as image, data
 zoom, restore, and reset.
  */
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Chart {
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     title: Vec<Title>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     tooltip: Option<Tooltip>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     legend: Option<Legend>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     toolbox: Option<Toolbox>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     grid: Vec<Grid>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(rename = "grid3D")]
     grid3d: Vec<Grid3D>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     x_axis: Vec<Axis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(rename = "xAxis3D")]
     x_axis3d: Vec<Axis3D>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     y_axis: Vec<Axis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(rename = "yAxis3D")]
     y_axis3d: Vec<Axis3D>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     #[serde(rename = "zAxis3D")]
     z_axis3d: Vec<Axis3D>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     polar: Vec<PolarCoordinate>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     angle_axis: Vec<AngleAxis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     radius_axis: Vec<RadiusAxis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     single_axis: Option<SingleAxis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     parallel_axis: Vec<ParallelAxis>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     axis_pointer: Vec<AxisPointer>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     visual_map: Vec<VisualMap>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     data_zoom: Vec<DataZoom>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     parallel: Option<ParallelCoordinate>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     dataset: Option<Dataset>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     radar: Vec<RadarCoordinate>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     color: Vec<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     mark_line: Option<MarkLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     aria: Option<Aria>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     series: Vec<Series>,
 
     #[serde(skip_serializing)]
@@ -517,7 +497,7 @@ impl ToString for Chart {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum EchartsError {
     HtmlRenderingError(String),
     ImageRenderingError(String),

@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{
     AxisLabel, AxisLine, AxisPointer, AxisTick, AxisType, BoundaryGap, MinorSplitLine, MinorTick,
@@ -6,96 +7,74 @@ use crate::element::{
 };
 
 /// The angle axis in Polar Coordinate.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AngleAxis {
-    #[serde(skip_serializing_if = "Option::is_none")]
     boundary_gap: Option<BoundaryGap>,
 
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// The index of angle axis in Polar Coordinate.
-    #[serde(skip_serializing_if = "Option::is_none")]
     polar_index: Option<f64>,
 
     /// Starting angle of axis, default to 90.
-    #[serde(skip_serializing_if = "Option::is_none")]
     start_angle: Option<f64>,
 
     /// Whether the direction of axis is clockwise, default to true.
-    #[serde(skip_serializing_if = "Option::is_none")]
     clockwise: Option<bool>,
 
     /// Type of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<AxisType>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
     /// The minimun value of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
     /// The maximum value of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     interval: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     log_base: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     silent: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     trigger_event: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_tick: Option<AxisTick>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_pointer: Option<AxisPointer>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     minor_tick: Option<MinorTick>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_line: Option<SplitLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     minor_split_line: Option<MinorSplitLine>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_area: Option<SplitArea>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     data: Vec<String>,
 }
 

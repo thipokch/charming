@@ -1,29 +1,28 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::{color::Color, Formatter};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLabel {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     distance: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<Formatter>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     rotate: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     interval: Option<f64>,
 }
 

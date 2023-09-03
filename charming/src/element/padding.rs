@@ -1,6 +1,13 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Serialize, Deserialize};
+use serde_with::{skip_serializing_none, serde_as};
 
 /// Padding space around content.
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub enum Padding {
     /// Set padding of all sides.
     Single(f64),

@@ -1,66 +1,63 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
     element::{ColorBy, CoordinateSystem, Emphasis, LineStyle},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ProgressiveChunkMode {
     Sequential,
     Mod,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Parallel {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     parallel_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color_by: Option<ColorBy>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     emphasis: Option<Emphasis>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inactive_opacity: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     active_opacity: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     realtime: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     smooth: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     progressive: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     progressive_threshold: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     progressive_chunk_mode: Option<ProgressiveChunkMode>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 

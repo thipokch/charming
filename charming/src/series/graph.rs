@@ -1,11 +1,16 @@
 use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::element::{CoordinateSystem, Label, LabelLayout, LineStyle, ScaleLimit};
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLayoutCircular {
-    #[serde(skip_serializing_if = "Option::is_none")]
     rotate_label: Option<bool>,
 }
 
@@ -20,22 +25,22 @@ impl GraphLayoutCircular {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLayoutForce {
-    #[serde(skip_serializing_if = "Option::is_none")]
     init_layout: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     gravity: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     edge_length: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout_animation: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     friction: Option<f64>,
 }
 
@@ -76,7 +81,12 @@ impl GraphLayoutForce {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum GraphLayout {
     None,
@@ -95,22 +105,22 @@ impl From<&str> for GraphLayout {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphNodeLabel {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     formatter: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     font_size: Option<u64>,
 }
 
@@ -151,7 +161,12 @@ impl GraphNodeLabel {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphNode {
     pub id: String,
@@ -162,26 +177,39 @@ pub struct GraphNode {
     pub category: u64,
     pub symbol_size: f64,
     #[serde(skip_deserializing)]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub label: Option<GraphNodeLabel>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLink {
     pub source: String,
     pub target: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub value: Option<f64>,
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphCategory {
     pub name: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphData {
     pub nodes: Vec<GraphNode>,
@@ -189,70 +217,55 @@ pub struct GraphData {
     pub categories: Vec<GraphCategory>,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Graph {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     legend_hover_link: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     x_axis_index: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     y_axis_index: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     polar_axis_index: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     geo_index: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     calendar_index: Option<u64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     layout: Option<GraphLayout>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     circular: Option<GraphLayoutCircular>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     force: Option<GraphLayoutForce>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     roam: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label_layout: Option<LabelLayout>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale_limit: Option<ScaleLimit>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<LineStyle>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     categories: Vec<GraphCategory>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     links: Vec<GraphLink>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
     data: Vec<GraphNode>,
 }
 

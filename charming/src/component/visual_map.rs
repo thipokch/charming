@@ -1,42 +1,45 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
     element::{Color, Orient, TextStyle},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum VisualMapType {
     Continuous,
     Piecewise,
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VisualMapPiece {
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     lt: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     lte: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     gt: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     gte: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 }
 
@@ -119,10 +122,15 @@ impl From<(i64, i64, &str)> for VisualMapPiece {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VisualMapChannel {
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     color: Vec<Color>,
 }
 
@@ -137,80 +145,63 @@ impl VisualMapChannel {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct VisualMap {
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<VisualMapType>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     color: Vec<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     dimension: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     series_index: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<f64>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     categories: Vec<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     calculable: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     orient: Option<Orient>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_style: Option<TextStyle>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     range: Option<(f64, f64)>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     realtime: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     inverse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     precision: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_height: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     in_range: Option<VisualMapChannel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     out_range: Option<VisualMapChannel>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     pieces: Option<Vec<VisualMapPiece>>,
 }
 

@@ -1,37 +1,36 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::{CompositeValue, DataFrame, DataPoint},
     element::{CoordinateSystem, DimensionEncode},
 };
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Bar3d {
     #[serde(rename = "type")]
     type_: String,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     coordinate_system: Option<CoordinateSystem>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     grid3d_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     geo3d_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     globe_index: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shading: Option<String>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     encode: Option<DimensionEncode>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: DataFrame,
 }
 impl Bar3d {

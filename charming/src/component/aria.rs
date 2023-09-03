@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
@@ -8,51 +9,46 @@ use crate::{
 /**
 A single decal pattern.
  */
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DecalItem {
     /// The symbol type of the decal.
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol: Option<Symbol>,
 
     /// The size of symbol relative to decal, ranging from 0 to 1.
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_size: Option<f64>,
 
     /// Whether to keep the aspect ratio of the pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     symbol_keep_aspect: Option<bool>,
 
     ///The color of the decal pattern. it is recommended to use a translucent
     /// color, which can be superimposed on the color of the series itself.
-    #[serde(skip_serializing_if = "Option::is_none")]
     color: Option<Color>,
 
     /// The background color of the decal will be over the color of the series
     /// itself, under the decal pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
     /// Controls the horizontal pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     dash_array_x: Option<CompositeValue>,
 
     /// Controls the vertical pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     dash_array_y: Option<CompositeValue>,
 
     /// The overall rotation angle (in radians) of the pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     rotation: Option<f64>,
 
     /// The upper limit of the width of the generated pattern before it is
     /// duplicated.
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_tile_width: Option<f64>,
 
     /// The upper limit of the height of the generated pattern before it is
     /// duplicated.
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_tile_height: Option<f64>,
 }
 
@@ -126,18 +122,22 @@ impl DecalItem {
 /**
 Decal patterns to be applied to series data.
  */
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Decal {
     /// Whether to show decal patterns. If `decals` is not set, this option is
     /// used to enable the default decal pattern.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// The style of decal patterns. If multiple items are set, then each item
     /// in the array will have one style and the data will be looped through
     /// the array in order.
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     decals: Vec<DecalItem>,
 }
 
@@ -190,23 +190,25 @@ Chart::new()
     .series(Bar::new().data(vec![140, 230, 120, 50, 30, 150, 120]));
 ```
  */
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Aria {
     /// Whether to enable WAI-ARIA.
-    #[serde(skip_serializing_if = "Option::is_none")]
     enabled: Option<bool>,
 
     /// If `enabled` is set to `true`, `label` is enabled by default. When
     /// enabled, the description of the chart will be automatically and
     /// intelligently generated based on the chart, data title, etc. Users can
     /// also modify the description through `label`.
-    #[serde(skip_serializing_if = "Option::is_none")]
     label: Option<Label>,
 
     /// Decal patterns are added to series data as an additional hint other
     /// than colors to help differentiate the data.
-    #[serde(skip_serializing_if = "Option::is_none")]
     decal: Option<Decal>,
 }
 

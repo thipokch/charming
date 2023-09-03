@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
@@ -9,120 +10,97 @@ use crate::{
 };
 
 /// Axis in cartesian coordinate.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Axis {
     /// Type of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "type")]
     type_: Option<AxisType>,
 
     /// Id of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// Index of grid which is used to place this axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     grid_index: Option<f64>,
 
     /// Offset of this axis relative to default position.
-    #[serde(skip_serializing_if = "Option::is_none")]
     offset: Option<f64>,
 
     /// Name of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     name: Option<String>,
 
     /// Location of axis name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_location: Option<NameLocation>,
 
     /// Text style of axis name.
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_text_style: Option<TextStyle>,
 
     /// Gap between axis name and axis line.
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_gap: Option<f64>,
 
     /// Rotation of axis name
-    #[serde(skip_serializing_if = "Option::is_none")]
     name_rotation: Option<f64>,
 
     /// Set this to `true` to invert the axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     inverse: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     align_ticks: Option<bool>,
 
     /// The boundary gap on both sides of a coordinate axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     boundary_gap: Option<BoundaryGap>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     position: Option<CompositeValue>,
 
     /// The mimimum value of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     min: Option<CompositeValue>,
 
     /// The maximum value of axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     max: Option<CompositeValue>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     scale: Option<bool>,
 
     /// Number of segments that the axis is split into.
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_number: Option<f64>,
 
     /// Minimum gap between split lines.
-    #[serde(skip_serializing_if = "Option::is_none")]
     min_interval: Option<f64>,
 
     /// Maximum gap between split lines.
-    #[serde(skip_serializing_if = "Option::is_none")]
     max_interval: Option<f64>,
 
     /// Compulsively set segmentation interval for axis.
-    #[serde(skip_serializing_if = "Option::is_none")]
     interval: Option<f64>,
 
     /// Base of logarithm, which is valid only for numeric axes with `log` type.
-    #[serde(skip_serializing_if = "Option::is_none")]
     log_base: Option<f64>,
 
     /// Settings related to axis label.
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_label: Option<AxisLabel>,
 
     /// Settings related to axis tick.
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_tick: Option<AxisTick>,
 
     /// Settings related to axis line.
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_line: Option<AxisLine>,
 
     /// Settings related to axis pointer.
-    #[serde(skip_serializing_if = "Option::is_none")]
     axis_pointer: Option<AxisPointer>,
 
     /// Settings related to split area.
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_area: Option<SplitArea>,
 
     /// Settings related to split line.
-    #[serde(skip_serializing_if = "Option::is_none")]
     split_line: Option<SplitLine>,
 
-    #[serde(skip_serializing_if = "Vec::is_empty")]
+
     data: Vec<String>,
 }
 

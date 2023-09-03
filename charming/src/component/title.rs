@@ -1,4 +1,5 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_with::serde_as;
 
 use crate::{
     datatype::CompositeValue,
@@ -6,119 +7,96 @@ use crate::{
 };
 
 /// Title component, including main title and subtitle.
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Title {
     /// Component ID.
-    #[serde(skip_serializing_if = "Option::is_none")]
     id: Option<String>,
 
     /// Whether to show the title component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
     /// The main title text, supporting for `\n` for newlines.
-    #[serde(skip_serializing_if = "Option::is_none")]
     text: Option<String>,
 
     /// The hyper link of main title text.
-    #[serde(skip_serializing_if = "Option::is_none")]
     link: Option<String>,
 
     /// Open the hyper link of main title in specified target.
-    #[serde(skip_serializing_if = "Option::is_none")]
     target: Option<LinkTarget>,
 
     /// The text style of main title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_style: Option<TextStyle>,
 
     /// The sub title text, supporting for `\n` for newlines.
-    #[serde(skip_serializing_if = "Option::is_none")]
     subtext: Option<String>,
 
     /// The hyper link of sub title text.
-    #[serde(skip_serializing_if = "Option::is_none")]
     sublink: Option<String>,
 
     /// Open the hyper link of sub title in specified target.
-    #[serde(skip_serializing_if = "Option::is_none")]
     subtarget: Option<LinkTarget>,
 
     /// The text style of sub title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     subtext_style: Option<TextStyle>,
 
     /// The horizontal align of the component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_align: Option<TextAlign>,
 
     /// The vertical align of the component.
-    #[serde(skip_serializing_if = "Option::is_none")]
     text_vertical_align: Option<TextVerticalAlign>,
 
     /// Title padding, the unit is px.
-    #[serde(skip_serializing_if = "Option::is_none")]
     padding: Option<Padding>,
 
     /// The gap between the main title and the sub title, the unit is px.
-    #[serde(skip_serializing_if = "Option::is_none")]
     item_gap: Option<f64>,
 
     /// The `zlevel` value of all graphical elements in the title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     zlevel: Option<f64>,
 
     /// The `z` value of all graphical elements in the title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     z: Option<f64>,
 
     /// Distance between title component and the left side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     left: Option<CompositeValue>,
 
     /// Distance between title component and the top side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     top: Option<CompositeValue>,
 
     /// Distance between title component and the right side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     right: Option<CompositeValue>,
 
     /// Distance between title component and the bottom side of the container.
-    #[serde(skip_serializing_if = "Option::is_none")]
     bottom: Option<CompositeValue>,
 
     /// Background color of title, default to be transparent.
-    #[serde(skip_serializing_if = "Option::is_none")]
     background_color: Option<Color>,
 
     /// Border color of title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_color: Option<Color>,
 
     /// Border width of title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_width: Option<f64>,
 
     /// Border radius of title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     border_radius: Option<f64>,
 
     /// Shadow color of title.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_color: Option<Color>,
 
     /// Size of shadow blur.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_blur: Option<f64>,
 
     /// Offset distance on the horizontal direction of shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_x: Option<f64>,
 
     /// Offset distance on the vertical direction of shadow.
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
 }
 

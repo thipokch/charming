@@ -1,7 +1,14 @@
-use serde::{ser::SerializeSeq, Serialize};
+use serde::{ser::SerializeSeq, Deserialize, Serialize};
+use serde_with::serde_as;
 
 use super::color::Color;
 
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct ColorSegment(f64, Color);
 
 impl Serialize for ColorSegment {
@@ -25,27 +32,26 @@ impl From<(f64, Color)> for ColorSegment {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLineStyle {
     color: Vec<ColorSegment>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     width: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_blur: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_color: Option<Color>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_x: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     shadow_offset_y: Option<f64>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     opacity: Option<f64>,
 }
 
@@ -110,19 +116,20 @@ impl From<(f64, &str, f64)> for AxisLineStyle {
     }
 }
 
-#[derive(Serialize)]
+#[serde_as]
+#[serde_with::apply(
+    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
+    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
+)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLine {
-    #[serde(skip_serializing_if = "Option::is_none")]
     show: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     on_zero: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     round_cap: Option<bool>,
 
-    #[serde(skip_serializing_if = "Option::is_none")]
     line_style: Option<AxisLineStyle>,
 }
 
