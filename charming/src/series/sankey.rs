@@ -1,16 +1,12 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::CompositeValue,
     element::{Emphasis, Label, LineStyle, Orient},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum SankeyNodeAlign {
@@ -19,11 +15,7 @@ pub enum SankeyNodeAlign {
     Justify,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SankeyNode {
@@ -47,11 +39,7 @@ where
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SankeyLink {
@@ -74,17 +62,10 @@ where
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Sankey {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     name: Option<String>,
@@ -125,7 +106,6 @@ pub struct Sankey {
 impl Sankey {
     pub fn new() -> Self {
         Sankey {
-            type_: "sankey".to_string(),
             id: None,
             name: None,
             z_level: None,

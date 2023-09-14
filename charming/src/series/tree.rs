@@ -1,16 +1,12 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::CompositeValue,
     element::{Blur, Emphasis, ItemStyle, Label, Select, Symbol},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeLayout {
@@ -18,11 +14,7 @@ pub enum TreeLayout {
     Radial,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TreeOrient {
     #[serde(rename = "LR")]
@@ -35,11 +27,7 @@ pub enum TreeOrient {
     BottomTop,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TreeEdgeShape {
@@ -47,11 +35,7 @@ pub enum TreeEdgeShape {
     Polyline,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TreeLeaves {
@@ -69,11 +53,7 @@ impl TreeLeaves {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TreeNode {
@@ -87,17 +67,10 @@ pub struct TreeNode {
 }
 
 /// The tree diagram is mainly used to display the tree data structure.
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Tree {
-    #[serde(rename = "type")]
-    type_: String,
-
     /// Component ID.
     id: Option<String>,
 
@@ -175,7 +148,6 @@ pub struct Tree {
 impl Tree {
     pub fn new() -> Self {
         Self {
-            type_: "tree".into(),
             id: None,
             name: None,
             z_level: None,

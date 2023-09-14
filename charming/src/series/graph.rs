@@ -1,13 +1,9 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::element::{CoordinateSystem, Label, LabelLayout, LineStyle, ScaleLimit};
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLayoutCircular {
@@ -25,11 +21,7 @@ impl GraphLayoutCircular {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLayoutForce {
@@ -81,11 +73,7 @@ impl GraphLayoutForce {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum GraphLayout {
@@ -105,11 +93,7 @@ impl From<&str> for GraphLayout {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphNodeLabel {
@@ -161,11 +145,7 @@ impl GraphNodeLabel {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphNode {
@@ -180,11 +160,7 @@ pub struct GraphNode {
     pub label: Option<GraphNodeLabel>,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphLink {
@@ -193,22 +169,14 @@ pub struct GraphLink {
     pub value: Option<f64>,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphCategory {
     pub name: String,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GraphData {
@@ -217,17 +185,10 @@ pub struct GraphData {
     pub categories: Vec<GraphCategory>,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Graph {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     name: Option<String>,
@@ -272,7 +233,6 @@ pub struct Graph {
 impl Graph {
     pub fn new() -> Self {
         Self {
-            type_: "graph".into(),
             id: None,
             name: None,
             legend_hover_link: None,

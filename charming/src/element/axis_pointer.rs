@@ -1,16 +1,12 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::CompositeValue,
     element::{Label, LineStyle},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AxisPointerType {
@@ -20,11 +16,7 @@ pub enum AxisPointerType {
     None,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum AxisPointerAxis {
@@ -34,11 +26,7 @@ pub enum AxisPointerAxis {
     Angle,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisPointerLink {
@@ -84,11 +72,7 @@ impl AxisPointerLink {
 
 /// Axis Pointer is a tool for displaying reference line and axis value under
 /// mouse pointer.
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisPointer {

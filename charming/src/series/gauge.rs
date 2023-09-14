@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
@@ -9,11 +9,7 @@ use crate::{
     },
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeDetail {
@@ -97,11 +93,7 @@ impl GaugeDetail {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeTitle {
@@ -129,11 +121,7 @@ impl GaugeTitle {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GaugeProgress {
@@ -193,17 +181,10 @@ impl GaugeProgress {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Gauge {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     name: Option<String>,
@@ -257,7 +238,7 @@ pub struct Gauge {
 impl Gauge {
     pub fn new() -> Self {
         Self {
-            type_: "gauge".to_string(),
+                        // type_: "gauge".to_string(),
             id: None,
             name: None,
             color_by: None,

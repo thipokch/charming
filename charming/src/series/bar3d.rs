@@ -1,21 +1,16 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::{CompositeValue, DataFrame, DataPoint},
     element::{CoordinateSystem, DimensionEncode},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Bar3d {
-    #[serde(rename = "type")]
-    type_: String,
-
+    // #[serde(rename = "type")]
+    // type_: String,
     name: Option<String>,
 
     coordinate_system: Option<CoordinateSystem>,
@@ -30,13 +25,12 @@ pub struct Bar3d {
 
     encode: Option<DimensionEncode>,
 
-
     data: DataFrame,
 }
 impl Bar3d {
     pub fn new() -> Self {
         Self {
-            type_: "bar3D".to_string(),
+            // type_: "bar3D".to_string(),
             name: None,
             coordinate_system: None,
             grid3d_index: None,

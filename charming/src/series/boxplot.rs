@@ -1,19 +1,12 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::element::{ColorBy, CoordinateSystem};
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Boxplot {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     name: Option<String>,
@@ -32,7 +25,6 @@ pub struct Boxplot {
 impl Boxplot {
     pub fn new() -> Self {
         Boxplot {
-            type_: String::from("boxplot"),
             id: None,
             name: None,
             coordinate_system: None,

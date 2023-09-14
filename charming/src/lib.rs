@@ -102,7 +102,7 @@ use component::{
 use datatype::Dataset;
 use element::{process_raw_strings, AxisPointer, Color, MarkLine, Tooltip};
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use series::Series;
 
@@ -240,11 +240,7 @@ mouse pointer.
 [`Toolbox`] is a feature toolbox that includes data view, save as image, data
 zoom, restore, and reset.
  */
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Chart {
@@ -446,6 +442,15 @@ impl Chart {
 
     pub fn dataset(mut self, dataset: Dataset) -> Self {
         self.dataset = Some(dataset);
+        self
+    }
+
+    pub fn source(mut self, source: datatype::Source) -> Self {
+        if let Some(ds) = &self.dataset {
+            self.dataset = Some(ds.clone().source(source));
+        } else {
+            self.dataset = Some(Dataset::new().source(source));
+        }
         self
     }
 

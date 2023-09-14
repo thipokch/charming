@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
 
 pub static RAW_MARK: &str = "#*#*#*#";
 

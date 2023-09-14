@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 pub mod bar;
 pub mod bar3d;
@@ -49,12 +49,9 @@ pub use theme_river::*;
 pub use tree::*;
 pub use treemap::*;
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
-#[derive(Debug, Clone, PartialEq, Deserialize)]
+#[serde_auto]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(tag = "type", rename_all = "camelCase")]
 pub enum Series {
     Bar(bar::Bar),
     Bar3d(bar3d::Bar3d),
@@ -82,16 +79,6 @@ pub enum Series {
 
 macro_rules! impl_series {
     ($($variant:ident),*) => {
-        impl Serialize for Series {
-            fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-            where
-                S: serde::ser::Serializer,
-            {
-                match self {
-                    $(Self::$variant(series) => series.serialize(serializer),)*
-                }
-            }
-        }
         $(
             impl From<$variant> for Series {
                 fn from(series: $variant) -> Self {

@@ -1,16 +1,12 @@
 use serde::{ser::SerializeSeq, Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::CompositeValue,
     element::{BoundaryGap, ColorBy, CoordinateSystem, Label},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct ThemeRiverData {
     date: CompositeValue,
@@ -54,17 +50,10 @@ where
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ThemeRiver {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     name: Option<String>,
@@ -96,7 +85,6 @@ pub struct ThemeRiver {
 impl ThemeRiver {
     pub fn new() -> Self {
         Self {
-            type_: "themeRiver".to_string(),
             id: None,
             name: None,
             color_by: None,

@@ -1,0 +1,17 @@
+[package]
+edition = "2021"
+name = "macros"
+version = "0.1.0"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+darling = "0.20.3"
+proc-macro2 = "1.0.66"
+quote = "1.0.33"
+serde = "1.0.188"
+serde_derive = "1.0.188"
+serde_json = "1.0.105"
+serde_with = "3.3.0"
+syn = "2.0.29"

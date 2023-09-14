@@ -1,16 +1,12 @@
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
     element::{ColorBy, CoordinateSystem, Emphasis, LineStyle},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ProgressiveChunkMode {
@@ -18,17 +14,10 @@ pub enum ProgressiveChunkMode {
     Mod,
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Parallel {
-    #[serde(rename = "type")]
-    type_: String,
-
     id: Option<String>,
 
     coordinate_system: Option<CoordinateSystem>,
@@ -64,7 +53,6 @@ pub struct Parallel {
 impl Parallel {
     pub fn new() -> Self {
         Self {
-            type_: "parallel".to_string(),
             id: None,
             coordinate_system: None,
             parallel_index: None,

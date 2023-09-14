@@ -1,13 +1,9 @@
 use serde::{ser::SerializeSeq, Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use super::color::Color;
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Deserialize)]
 pub struct ColorSegment(f64, Color);
 
@@ -32,11 +28,7 @@ impl From<(f64, Color)> for ColorSegment {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLineStyle {
@@ -116,11 +108,7 @@ impl From<(f64, &str, f64)> for AxisLineStyle {
     }
 }
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AxisLine {

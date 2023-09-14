@@ -1,24 +1,19 @@
 use std::vec;
 
 use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use macros::serde_auto;
 
 use crate::{
     datatype::{DataFrame, DataPoint},
     element::{BackgroundStyle, ColorBy, CoordinateSystem, Emphasis, ItemStyle, Label, MarkLine},
 };
 
-#[serde_as]
-#[serde_with::apply(
-    Option => #[serde(default, skip_serializing_if = "Option::is_none")],
-    Vec => #[serde(default, skip_serializing_if = "Vec::is_empty")],
-)]
+#[serde_auto]
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Bar {
-    #[serde(rename = "type")]
-    type_: String,
-
+    // #[serde(rename = "type")]
+    // type_: String,
     id: Option<String>,
 
     color_by: Option<ColorBy>,
@@ -55,14 +50,13 @@ pub struct Bar {
 
     bar_width: Option<f64>,
 
-
     data: DataFrame,
 }
 
 impl Bar {
     pub fn new() -> Self {
         Self {
-            type_: "bar".to_string(),
+            //             // type_: "bar".to_string(),
             id: None,
             name: None,
             color_by: None,
